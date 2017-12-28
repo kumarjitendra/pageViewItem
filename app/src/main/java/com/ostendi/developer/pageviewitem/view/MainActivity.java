@@ -17,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.activity_main);
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         relativeLayout.removeView(recyclerView);
@@ -27,10 +28,10 @@ public class MainActivity extends AppCompatActivity {
         viewModel.pagedListLiveData.observe(this, pagedList -> adapter.setList(pagedList));
         //Attach the adapter to recyclerview
         recyclerView.setAdapter(adapter);
-        int numberOfColumns = 5;
-        GridLayoutManager glm = new GridLayoutManager(this.getApplicationContext(),numberOfColumns);
-         glm.setOrientation(GridLayoutManager.VERTICAL);
-         //glm.setOrientation(GridLayoutManager.HORIZONTAL);
+        int numberOfColumns = 10;
+        GridLayoutManager glm = new GridLayoutManager(this.getApplicationContext(), numberOfColumns);
+        glm.setOrientation(GridLayoutManager.VERTICAL);
+        glm.setOrientation(GridLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(glm);
     }
 }

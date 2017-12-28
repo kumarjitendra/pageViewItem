@@ -44,11 +44,6 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
         PageViewHolder pageViewHolder = (PageViewHolder)holder;
         if (item != null) {
             pageViewHolder.itemTextView.setText(String.valueOf(item));
-            // Set  color for TextView background
-         //   holder.itemTextView.setBackgroundColor(Color.TRANSPARENT);
-            // Set  color for TextView
-         //   holder.itemTextView.setTextColor(Color.TRANSPARENT);
-
         }
     }
 
