@@ -10,10 +10,13 @@ import android.arch.paging.PagedList;
 import com.ostendi.developer.pageviewitem.model.Item;
 import com.ostendi.developer.pageviewitem.model.PageDataSource;
 
+import java.lang.ref.WeakReference;
+import java.util.ArrayList;
+
 public class MyViewModel extends ViewModel {
 
     private static final int INITIAL_Load_Size = 100;
-    private static final int PAGE_SIZE = 100;
+    private static final int PAGE_SIZE = 50;
     private static final Boolean Enable_Place_holders = false;
     private static final int PREFETCH_DISTANCE = 50;//the paged list will attempt to load 50 items in advance of data that's already been accessed.
 
@@ -38,6 +41,4 @@ public class MyViewModel extends ViewModel {
                 .setEnablePlaceholders(Enable_Place_holders)
                 .build()).build();
     }
-
-
 }
