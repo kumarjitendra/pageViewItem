@@ -2,11 +2,9 @@ package com.ostendi.developer.pageviewitem.view;
 
 
 import android.arch.paging.PagedListAdapter;
-import android.graphics.Color;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
+import android.content.ContentValues;
 import android.support.v7.widget.RecyclerView;
-import android.util.SparseBooleanArray;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,14 +16,7 @@ import android.widget.TextView;
 import com.ostendi.developer.pageviewitem.R;
 import com.ostendi.developer.pageviewitem.model.Item;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.PageViewHolder> {
-    Item item;
-    List<Boolean> checkedCases = new ArrayList<>(Arrays.asList(false, false, false));
-
     PageViewAdapter() {
         super(Item.DIFF_CALLBACK);
     }
@@ -40,43 +31,49 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
 
     @Override
     public void onBindViewHolder(PageViewAdapter.PageViewHolder holder, int position) {
-        item = getItem(position);
-        PageViewHolder pageViewHolder = (PageViewHolder) holder;
-        if (item != null) {
-            pageViewHolder.lineTextView.setText(String.valueOf(item));
-        }
-
-        pageViewHolder.checkBoxSelection.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (buttonView.isChecked())
-                    checkedCases.set(0, true);
-                else
-                    checkedCases.set(0, false);
-            }
-        });
+        holder.bind(holder, position);
     }
 
-    public static class PageViewHolder extends RecyclerView.ViewHolder implements CompoundButton.OnCheckedChangeListener {
+    public class PageViewHolder extends RecyclerView.ViewHolder {
         public TextView lineTextView;
         public LinearLayout container;
-        public CheckBox checkBoxSelection;
+        public CheckBox checkBox;
+        boolean checked = false;
+        Item item;
 
         public PageViewHolder(View layoutView) {
             super(layoutView);
             lineTextView = (TextView) layoutView.findViewById(R.id.line);
             container = (LinearLayout) layoutView.findViewById(R.id.container);
-            checkBoxSelection = (CheckBox) layoutView.findViewById(R.id.checkbox);
-            //setOnCheckedChangeListener:Register a callback to be invoked when the checked state of this button changes.
-            checkBoxSelection.setOnCheckedChangeListener(this);
+            checkBox = (CheckBox) layoutView.findViewById(R.id.checkbox);
         }
 
-        //onCheckedChanged :Called when the checked state of a compound button has changed.
-        @Override
-        public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+        private void bind(PageViewHolder holder, int position) {
+            item = getItem(position);
+            PageViewHolder pageViewHolder = (PageViewHolder) holder;
+            if (item != null) {
+                pageViewHolder.lineTextView.setText(String.valueOf(item));
+            }
+            pageViewHolder.itemView.setTag(position);
+            checkBox.setChecked(checked); //By default make it unchecked
 
+            //getting the checkbox value whenever clicked
+            //CompoundButton: A button with two states, checked and unchecked. When the button is pressed or clicked,the state changes automatically.
+            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                @Override
+                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                    //saving the checkbox value in database
+                    //ContentValues:store a set of values that the ContentResolver can process.
+                    ContentValues cv = new ContentValues();
+                    //put :Adds a value to the set.
+                    cv.put(String.valueOf(item), isChecked);
+                    Log.e("checkboxvalue", String.valueOf(cv));
+
+                    // Save the checked line into datasource so that when it is resumed after closing the application it should remember the checked line
+                    // db.update(Contract.TABLE_TODO.TABLE_NAME, cv, Contract.TABLE_TODO._ID + "=" + id, null);
+                }
+            });
         }
-
     }
 }
 

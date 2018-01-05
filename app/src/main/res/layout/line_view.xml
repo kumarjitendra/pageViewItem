@@ -10,8 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="center_horizontal|top"
-        android:gravity="left|center_horizontal"
-        android:onClick="onCheckboxClicked"/>
+        android:gravity="left|center_horizontal" />
 
     <LinearLayout
         android:id="@+id/container"

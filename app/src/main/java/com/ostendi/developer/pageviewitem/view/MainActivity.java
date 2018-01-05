@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
         int numberOfColumns = 1;
         gridLayoutManager = new GridLayoutManager(this.getApplicationContext(), numberOfColumns);
         gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);
-        // gridLayoutManager.setOrientation(GridLayoutManager.HORIZONTAL);
         recyclerView.setLayoutManager(gridLayoutManager);
     }
 }
