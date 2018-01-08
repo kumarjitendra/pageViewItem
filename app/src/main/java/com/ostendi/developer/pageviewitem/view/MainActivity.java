@@ -1,5 +1,6 @@
 package com.ostendi.developer.pageviewitem.view;
 
+import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.paging.PagedList;
@@ -24,13 +25,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        pageViewAdapter = new PageViewAdapter();
+        pageViewAdapter = new PageViewAdapter(this);
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.activity_main);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         relativeLayout.removeView(recyclerView);
         relativeLayout.addView(recyclerView);
-
-
         MyViewModel viewModel = ViewModelProviders.of(this).get(MyViewModel.class);
         viewModel.getLivePagedListData().observe(this, new Observer<PagedList<Item>>() {
             @Override

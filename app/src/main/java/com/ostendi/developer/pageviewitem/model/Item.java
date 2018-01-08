@@ -40,6 +40,10 @@ public class Item implements Checkable{
         return checked;
     }
 
+    public boolean getSelected() {
+        return checked;
+    }
+
     @Override
     public void toggle() {
         setChecked(!checked);

@@ -1,8 +1,8 @@
 package com.ostendi.developer.pageviewitem.view;
 
-
 import android.arch.paging.PagedListAdapter;
-import android.content.ContentValues;
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,8 +17,13 @@ import com.ostendi.developer.pageviewitem.R;
 import com.ostendi.developer.pageviewitem.model.Item;
 
 public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.PageViewHolder> {
-    PageViewAdapter() {
+    Item item;
+    boolean checked = false;
+    private Context context;
+    
+    PageViewAdapter(Context context) {
         super(Item.DIFF_CALLBACK);
+        this.context = context;
     }
 
     @Override
@@ -31,48 +36,49 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
 
     @Override
     public void onBindViewHolder(PageViewAdapter.PageViewHolder holder, int position) {
-        holder.bind(holder, position);
+        // holder.bind(holder, position);
+        item = getItem(position);
+        PageViewHolder pageViewHolder = (PageViewHolder) holder;
+        if (item != null) {
+            pageViewHolder.lineTextView.setText(String.valueOf(item));
+        }
+        SharedPreferences preferences = context.getSharedPreferences(
+                "MyPrefs", context.MODE_PRIVATE);
+
+        // We need an editor object to make changes
+        final SharedPreferences.Editor editor = preferences.edit();
+        // pageViewHolder.itemView.setTag(position);
+        pageViewHolder.checkboxId.setTag(position);
+        pageViewHolder.checkboxId.setChecked(preferences.getBoolean("checked", checked));
+
+
+        //getting the checkbox value whenever clicked
+        //CompoundButton: A button with two states, checked and unchecked. When the button is pressed or clicked,the state changes automatically.
+        pageViewHolder.checkboxId.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                // save the state of  checkboxes (checked or unchecked) when user exits the application
+                // so that it can reload the state when the application restarts
+                if (isChecked) {
+                    editor.putBoolean("checkBoxValue", isChecked);
+                    editor.commit();
+                    Log.e("checkboxvalue", String.valueOf(isChecked));
+                }
+            }
+        });
     }
 
     public class PageViewHolder extends RecyclerView.ViewHolder {
         public TextView lineTextView;
         public LinearLayout container;
-        public CheckBox checkBox;
-        boolean checked = false;
-        Item item;
+        public CheckBox checkboxId;
+
 
         public PageViewHolder(View layoutView) {
             super(layoutView);
             lineTextView = (TextView) layoutView.findViewById(R.id.line);
             container = (LinearLayout) layoutView.findViewById(R.id.container);
-            checkBox = (CheckBox) layoutView.findViewById(R.id.checkbox);
-        }
-
-        private void bind(PageViewHolder holder, int position) {
-            item = getItem(position);
-            PageViewHolder pageViewHolder = (PageViewHolder) holder;
-            if (item != null) {
-                pageViewHolder.lineTextView.setText(String.valueOf(item));
-            }
-            pageViewHolder.itemView.setTag(position);
-            checkBox.setChecked(checked); //By default make it unchecked
-
-            //getting the checkbox value whenever clicked
-            //CompoundButton: A button with two states, checked and unchecked. When the button is pressed or clicked,the state changes automatically.
-            checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-                @Override
-                public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                    //saving the checkbox value in database
-                    //ContentValues:store a set of values that the ContentResolver can process.
-                    ContentValues cv = new ContentValues();
-                    //put :Adds a value to the set.
-                    cv.put(String.valueOf(item), isChecked);
-                    Log.e("checkboxvalue", String.valueOf(cv));
-
-                    // Save the checked line into datasource so that when it is resumed after closing the application it should remember the checked line
-                    // db.update(Contract.TABLE_TODO.TABLE_NAME, cv, Contract.TABLE_TODO._ID + "=" + id, null);
-                }
-            });
+            checkboxId = (CheckBox) layoutView.findViewById(R.id.checkbox);
         }
     }
 }
