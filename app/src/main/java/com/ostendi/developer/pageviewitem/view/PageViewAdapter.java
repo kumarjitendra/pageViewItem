@@ -39,7 +39,7 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
         SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
         //  SharedPreferences preferences = context.getSharedPreferences(preferenceValues, 0);// 0 = Private Mode
         line = getItem(position);
-         PageViewHolder pageViewHolder = holder;
+        PageViewHolder pageViewHolder = holder;
         if (line != null) {
             pageViewHolder.lineTextView.setText(String.valueOf(line));
         }
@@ -48,41 +48,39 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
         // setTag:Sets the tag associated with this view. which is used to store data within a view without resorting to another data structure.
         pageViewHolder.checkBox.setTag(position);
 
-         Boolean checkedvalue =preferences.getBoolean("checked",false);
-         Log.e("checkedvalue", String.valueOf(checkedvalue));
-         if(checkedvalue ==true)
-         {
-         pageViewHolder.checkBox.setChecked(true);
-         } else {
-         pageViewHolder.checkBox.setChecked(false);
-         }
-
-         pageViewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-        @Override public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (pageViewHolder.checkBox.isChecked()) {
-        preferences.edit().putBoolean("checked", true).commit();
-        }
-        else {
-        preferences.edit().putBoolean("checked", false).commit();
+        Boolean checkedvalue = preferences.getBoolean("checked", false);
+        Log.e("checkedvalue", String.valueOf(checkedvalue));
+        if (checkedvalue == true) {
+            pageViewHolder.checkBox.setChecked(true);
+        } else {
+            pageViewHolder.checkBox.setChecked(false);
         }
 
-        }
+        pageViewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (pageViewHolder.checkBox.isChecked()) {
+                    preferences.edit().putBoolean("checked", true).commit();
+                } else {
+                    preferences.edit().putBoolean("checked", false).commit();
+                }
+
+            }
         });
 
 
         /**
-        holder.checkBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (holder.checkBox.isChecked()) {
-                    preferences.edit().putBoolean("checked", true).commit();
-                    // holder.checkBox.setChecked(true);
-                }
-            }
+         holder.checkBox.setOnClickListener(new View.OnClickListener() {
+        @Override public void onClick(View v) {
+        if (holder.checkBox.isChecked()) {
+        preferences.edit().putBoolean("checked", true).commit();
+        // holder.checkBox.setChecked(true);
+        }
+        }
         });
-        Boolean checkedvalue = preferences.getBoolean("checked", false);
-        Log.e("checkedvalue", String.valueOf(checkedvalue));
-        holder.checkBox.setChecked(checkedvalue);
+         Boolean checkedvalue = preferences.getBoolean("checked", false);
+         Log.e("checkedvalue", String.valueOf(checkedvalue));
+         holder.checkBox.setChecked(checkedvalue);
          **/
     }
 
