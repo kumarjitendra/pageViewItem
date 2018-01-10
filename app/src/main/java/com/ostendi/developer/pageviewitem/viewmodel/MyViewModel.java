@@ -15,10 +15,10 @@ import java.util.concurrent.Executors;
 
 public class MyViewModel extends ViewModel {
 
-    private static final int INITIAL_Load_Size =100;
-    private static final int PAGE_SIZE = 50;
+    private static final int INITIAL_Load_Size =20;
+    private static final int PAGE_SIZE = 20;
     private static final Boolean Enable_Place_holders = true;
-    private static final int PREFETCH_DISTANCE = 10;//the paged list will attempt to load 10 items in advance of data that's already been accessed.
+    private static final int PREFETCH_DISTANCE = 5;//the paged list will attempt to load 10 items in advance of data that's already been accessed.
     private static final int INITIAL_LOAD_KEY = 0;
     Executor backgroundThreadexecuter;
     PagedList.BoundaryCallback<Item> boundaryCallback;
@@ -26,10 +26,11 @@ public class MyViewModel extends ViewModel {
     //LiveData:Data holder class that keeps a value(here Item) and allows this value to be observed
     public LiveData<PagedList<Item>> livePagedListData;
     PageDataSource pageDataSource;
+
     public MyViewModel() {
 
         //newFixedThreadPool:Creates a thread pool that reuses a fixed number of threads operating off a shared unbounded queue
-       // If additional tasks are submitted when all threads are active, they will wait in the queue until a thread is available.
+        // If additional tasks are submitted when all threads are active, they will wait in the queue until a thread is available.
         backgroundThreadexecuter = Executors.newFixedThreadPool(5);
         getpagedListLiveData();
     }
@@ -38,7 +39,7 @@ public class MyViewModel extends ViewModel {
             new DataSource.Factory<Integer, Item>() {
                 @Override
                 public DataSource<Integer, Item> create() {
-                     pageDataSource = new PageDataSource();
+                    pageDataSource = new PageDataSource();
                     return pageDataSource;
                 }
             };
@@ -62,6 +63,7 @@ public class MyViewModel extends ViewModel {
                 .setInitialLoadKey(INITIAL_LOAD_KEY)//When a new PagedList/DataSource pair is created after the first, it acquires a load key from the previous generation so that data is loaded around the position already being observed.
                 .build();
     }
+
     //Expose data to observe by Activity and display on UI
     public LiveData<PagedList<Item>> getLivePagedListData() {
         return livePagedListData;

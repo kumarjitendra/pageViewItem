@@ -9,13 +9,13 @@ import java.util.List;
 
 
 public class PageDataSource extends PositionalDataSource<Item> {
-    int COUNT = 500000000;
+    int COUNT = 265656565;
 
     private List<Item> createNewItemsMatchingRequestedSize(int startPosition, int pagecount) {
         List<Item> newItems = new ArrayList<>();
         // actual load code here
         for (int i = 0; i < pagecount; i++) {
-            newItems.add(new Item("Line " + i + " " + "pageNumber(" + startPosition + ")"));
+            newItems.add(new Item("Line " +i + " " + "startPosition(" + startPosition + ")"));
         }
         return newItems;
     }
