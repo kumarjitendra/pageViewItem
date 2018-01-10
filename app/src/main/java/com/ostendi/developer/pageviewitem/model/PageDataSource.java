@@ -15,9 +15,8 @@ public class PageDataSource extends PositionalDataSource<Item> {
         List<Item> newItems = new ArrayList<>();
         // actual load code here
         for (int i = 0; i < pagecount; i++) {
-            newItems.add(new Item("Line " + i + " " + "startPosition(" + startPosition + ")"));
+            newItems.add(new Item("Line " + i + " " + "pageNumber(" + startPosition + ")"));
         }
-        Log.e("a", "listitemSofthenewlycreateditems " + newItems.size());
         return newItems;
     }
 
@@ -35,7 +34,6 @@ public class PageDataSource extends PositionalDataSource<Item> {
     public void loadRange(@NonNull LoadRangeParams params, @NonNull LoadRangeCallback<Item> callback) {
         List<Item> newLoadedItems = createNewItemsMatchingRequestedSize(params.startPosition, params.loadSize);
         callback.onResult(newLoadedItems);
-        Log.e("a", "hasMoreItemsToLoad: " + (params.loadSize == newLoadedItems.size()));
     }
 
 

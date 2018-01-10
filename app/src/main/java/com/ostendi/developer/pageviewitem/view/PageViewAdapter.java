@@ -3,6 +3,7 @@ package com.ostendi.developer.pageviewitem.view;
 import android.arch.paging.PagedListAdapter;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,13 +18,13 @@ import com.ostendi.developer.pageviewitem.R;
 import com.ostendi.developer.pageviewitem.model.Item;
 
 public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.PageViewHolder> {
+    private final MainActivity context;
     Item item;
-    boolean checked = false;
-    private Context context;
-    
-    PageViewAdapter(Context context) {
+    SharedPreferences preferences;
+
+    PageViewAdapter(MainActivity mainActivity) {
         super(Item.DIFF_CALLBACK);
-        this.context = context;
+        this.context = mainActivity;
     }
 
     @Override
@@ -36,33 +37,65 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
 
     @Override
     public void onBindViewHolder(PageViewAdapter.PageViewHolder holder, int position) {
-        // holder.bind(holder, position);
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
         item = getItem(position);
-        PageViewHolder pageViewHolder = (PageViewHolder) holder;
+        PageViewHolder pageViewHolder = holder;
         if (item != null) {
             pageViewHolder.lineTextView.setText(String.valueOf(item));
         }
-        SharedPreferences preferences = context.getSharedPreferences(
-                "MyPrefs", context.MODE_PRIVATE);
 
-        // We need an editor object to make changes
-        final SharedPreferences.Editor editor = preferences.edit();
-        // pageViewHolder.itemView.setTag(position);
+        //  pageViewHolder.checkboxId.setOnCheckedChangeListener(null);
+
+        // setTag:Sets the tag associated with this view. which is used to store data within a view without resorting to another data structure.
         pageViewHolder.checkboxId.setTag(position);
-        pageViewHolder.checkboxId.setChecked(preferences.getBoolean("checked", checked));
+        if (preferences != null) {
+            Log.e("isPrefNull", "preferences is not null");
+            //getBoolean:Retrieve a boolean value from the preferences.
+            pageViewHolder.checkboxId.setChecked(preferences.getBoolean("checkedStateValue", false));
 
+            Log.e("stateAftergetFromPref", String.valueOf(preferences.getBoolean("checkedStateValue", false)));
+            Log.e("check2", String.valueOf(preferences.contains("checkedState")));
+        }
 
-        //getting the checkbox value whenever clicked
+        //Getting the checkbox value whenever clicked
         //CompoundButton: A button with two states, checked and unchecked. When the button is pressed or clicked,the state changes automatically.
         pageViewHolder.checkboxId.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // save the state of  checkboxes (checked or unchecked) when user exits the application
-                // so that it can reload the state when the application restarts
                 if (isChecked) {
-                    editor.putBoolean("checkBoxValue", isChecked);
-                    editor.commit();
-                    Log.e("checkboxvalue", String.valueOf(isChecked));
+                    /**edit():
+                     * Create a new Editor for these preferences, through which you can make
+                     * modifications to the data in the preferences and atomically commit those
+                     * changes back to the SharedPreferences object.
+                     *
+                     * <p>Note that you <em>must</em> call {@link SharedPreferences.Editor#commit} to have any
+                     * changes you perform in the Editor actually show up in the
+                     * SharedPreferences.
+                     *
+                     * @return Returns a new instance of the {@link SharedPreferences.Editor} interface, allowing
+                     * you to modify the values in this SharedPreferences object.
+                     */
+
+                    /**putBoolean:
+                     * Set a boolean value in the preferences editor, to be written back
+                     * once {@link #commit} or {@link #apply} are called.
+                     *
+                     * @param key(checkedState) The name of the preference to modify.
+                     * @param value(isChecked) The new value for the preference.
+                     *
+                     * @return Returns a reference to the same Editor object, so you can
+                     * chain put calls together.
+                     */
+                    preferences.edit().putBoolean("checkedState", isChecked).commit();
+
+                    /**preferences.contains :
+                     * Checks whether the preferences contains a preference.
+                     * @param key(checkedState) The name of the preference to check.
+                     * @return Returns true if the preference exists in the preferences,
+                     *         otherwise false.
+                     */
+                    Log.e("check1", String.valueOf(preferences.contains("checkedState")));
+                    Log.e("isChecked", String.valueOf(isChecked));
                 }
             }
         });
@@ -76,9 +109,9 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
 
         public PageViewHolder(View layoutView) {
             super(layoutView);
-            lineTextView = (TextView) layoutView.findViewById(R.id.line);
-            container = (LinearLayout) layoutView.findViewById(R.id.container);
-            checkboxId = (CheckBox) layoutView.findViewById(R.id.checkbox);
+            lineTextView = layoutView.findViewById(R.id.line);
+            container = layoutView.findViewById(R.id.container);
+            checkboxId = layoutView.findViewById(R.id.checkbox);
         }
     }
 }
