@@ -4,10 +4,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.recyclerview.extensions.DiffCallback;
 import android.widget.Checkable;
 
-public class Item implements Checkable{
+public class Item {
 
     private String value;
-    public boolean checked;
+    private boolean selected;
 
     public Item(String value) {
         this.value = value;
@@ -24,29 +24,17 @@ public class Item implements Checkable{
             return oldItem.equals(newItem);
         }
     };
-
     @Override
     public String toString() {
         return value.toString();
     }
 
-    @Override
-    public void setChecked(boolean checked) {
-        this.checked = checked;
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
-    @Override
-    public boolean isChecked() {
-        return checked;
-    }
-
-    public boolean getSelected() {
-        return checked;
-    }
-
-    @Override
-    public void toggle() {
-        setChecked(!checked);
+    public boolean isSelected() {
+        return selected;
     }
 }
 

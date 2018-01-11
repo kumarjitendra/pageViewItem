@@ -1,5 +1,6 @@
 package com.ostendi.developer.pageviewitem.view;
 
+import android.arch.paging.PagedList;
 import android.arch.paging.PagedListAdapter;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -13,13 +14,14 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.ostendi.developer.pageviewitem.R;
 import com.ostendi.developer.pageviewitem.model.Item;
 
 public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.PageViewHolder> {
     private final Context context;
-    private static Item line;
+    SharedPreferences preferences;
 
     PageViewAdapter(Context context) {
         super(Item.DIFF_CALLBACK);
@@ -34,57 +36,44 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
         return pageViewHolder;
     }
 
+    //data is bound to views
     @Override
     public void onBindViewHolder(PageViewAdapter.PageViewHolder holder, int position) {
-        SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        //  SharedPreferences preferences = context.getSharedPreferences(preferenceValues, 0);// 0 = Private Mode
-        line = getItem(position);
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        final Item item = getItem(position);
         PageViewHolder pageViewHolder = holder;
-        if (line != null) {
-            pageViewHolder.lineTextView.setText(String.valueOf(line));
+        if (item != null) {
+            pageViewHolder.lineTextView.setText(String.valueOf(item));
+           // Boolean value = preferences.getBoolean("checkedState", false);
+           // pageViewHolder.checkBox.setChecked(preferences.contains("checkedState"));
         }
-        pageViewHolder.checkBox.setOnCheckedChangeListener(null);//Remove a previously setOnCheckedChangeListener
+
+        //Remove a previously setOnCheckedChangeListener.in some cases, it will prevent unwanted situations
+        pageViewHolder.checkBox.setOnCheckedChangeListener(null);
 
         // setTag:Sets the tag associated with this view. which is used to store data within a view without resorting to another data structure.
-        pageViewHolder.checkBox.setTag(position);
-
-        Boolean checkedvalue = preferences.getBoolean("checked", false);
-        Log.e("checkedvalue", String.valueOf(checkedvalue));
-        if (checkedvalue == true) {
-            pageViewHolder.checkBox.setChecked(true);
-        } else {
-            pageViewHolder.checkBox.setChecked(false);
-        }
-
+        pageViewHolder.checkBox.setTag(item);
+        pageViewHolder.checkBox.setSelected(item.isSelected());
         pageViewHolder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (pageViewHolder.checkBox.isChecked()) {
-                    preferences.edit().putBoolean("checked", true).commit();
-                } else {
-                    preferences.edit().putBoolean("checked", false).commit();
-                }
+                if (isChecked) {
+                  //  preferences.edit().putBoolean("checkedState", isChecked).commit();
+                  //  Log.e("isChecked", String.valueOf(isChecked));
 
+                    item.setSelected(true);
+                }
+                else {item.setSelected(false);}
             }
         });
 
+        pageViewHolder.checkBox.setChecked(item.isSelected());
 
-        /**
-         holder.checkBox.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View v) {
-        if (holder.checkBox.isChecked()) {
-        preferences.edit().putBoolean("checked", true).commit();
-        // holder.checkBox.setChecked(true);
-        }
-        }
-        });
-         Boolean checkedvalue = preferences.getBoolean("checked", false);
-         Log.e("checkedvalue", String.valueOf(checkedvalue));
-         holder.checkBox.setChecked(checkedvalue);
-         **/
     }
 
-    public class PageViewHolder extends RecyclerView.ViewHolder {
+
+        public class PageViewHolder extends RecyclerView.ViewHolder  {
         public TextView lineTextView;
         public LinearLayout container;
         public CheckBox checkBox;
@@ -93,7 +82,7 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
         public PageViewHolder(View layoutView) {
             super(layoutView);
             lineTextView = layoutView.findViewById(R.id.line);
-            container = layoutView.findViewById(R.id.container);
+           // container = layoutView.findViewById(R.id.container);
             checkBox = layoutView.findViewById(R.id.checkbox);
         }
     }
