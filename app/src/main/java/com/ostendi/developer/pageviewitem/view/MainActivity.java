@@ -17,7 +17,7 @@ import com.ostendi.developer.pageviewitem.viewmodel.MyViewModel;
 
 public class MainActivity extends AppCompatActivity {
 
-    private RecyclerView recyclerView;
+    public RecyclerView recyclerView;
     private GridLayoutManager gridLayoutManager;
     private PageViewAdapter pageViewAdapter;
 
