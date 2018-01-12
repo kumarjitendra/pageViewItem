@@ -54,20 +54,21 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
 
         if (holder.checkBox.isChecked()) {
             // Boolean value = preferences.getBoolean("checkedState", false);
-            //  holder.checkBox.setChecked(value);
-
-            //setChecked:Changes the checked state of this button.
-             holder.checkBox.setChecked(item.isSelected());
-             Log.e("pAdapter", "selectedItem " + String.valueOf(item.isSelected()));
+            //  holder.checkBox.setChecked(value); //setChecked:Changes the checked state of selected checkbox.
         }
 
         holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (holder.checkBox.isChecked()) {
+                     Log.e("pAdapter", "isChecked  " + String.valueOf(holder.checkBox.isChecked()));
                     // preferences.edit().putBoolean("checkedState", isChecked).commit();
-                  //  Log.e("pAdapter", "isChecked  " + String.valueOf(holder.checkBox.isChecked()));
+
                     item.setSelected(isChecked);
+                    holder.checkBox.setChecked(item.isSelected()); //setChecked:Changes the checked state of selected checkbox.
+                    Log.e("pAdapter", "setChecked  " + String.valueOf(holder.checkBox.isChecked()));
+                    Log.e("pAdapter", "setCheckedValue  " + String.valueOf(item.isSelected()));
+
                 }
             }
         });
