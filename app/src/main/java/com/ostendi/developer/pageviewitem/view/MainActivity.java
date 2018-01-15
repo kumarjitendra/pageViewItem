@@ -20,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
     private GridLayoutManager gridLayoutManager;
     private PageViewAdapter pageViewAdapter;
+    int x =999999999;//x = Numbers of max rows which will be cached when scrolling.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +29,9 @@ public class MainActivity extends AppCompatActivity {
         pageViewAdapter = new PageViewAdapter(this);
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.activity_main);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setItemViewCacheSize(x);
+
         relativeLayout.removeView(recyclerView);
         relativeLayout.addView(recyclerView);
         MyViewModel viewModel = ViewModelProviders.of(this).get(MyViewModel.class);

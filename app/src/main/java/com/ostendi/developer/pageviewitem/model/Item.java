@@ -8,20 +8,19 @@ import android.widget.Checkable;
 public class Item {
 
     private String value;
-    // private boolean selected =false;
-    private boolean selected ;
+    private boolean selected = true;
 
     public Item(String value) {
         this.value = value;
     }
 
     public void setSelected(boolean selected) {
-        Log.e("Item","setSelectedValue "+ String.valueOf(selected));
+        Log.e("Item", "SelectedValueIsSet " + String.valueOf(selected));
         this.selected = selected;
     }
 
-    public boolean isSelected() {
-        Log.e("Item", "ReturnSelectedValue "+ String.valueOf(selected));
+    public boolean getSelected() {
+        Log.e("Item", "SelectedValueReturned " + String.valueOf(selected));
         return selected;
 
     }

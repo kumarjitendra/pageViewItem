@@ -1,18 +1,16 @@
 package com.ostendi.developer.pageviewitem.view;
 
+import android.arch.paging.PagedList;
 import android.arch.paging.PagedListAdapter;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ostendi.developer.pageviewitem.R;
@@ -22,7 +20,7 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
     private final Context context;
     SharedPreferences preferences;
     Item item;
-    private final SparseBooleanArray array = new SparseBooleanArray();
+    PagedList<Item> pagedList;
 
     PageViewAdapter(Context context) {
         super(Item.DIFF_CALLBACK);
@@ -41,39 +39,24 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
     //Data is bound to views
     @Override
     public void onBindViewHolder(PageViewAdapter.PageViewHolder holder, int position) {
+        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        Log.e("pAdapter", "onBindViewHolderCalled  ");
         item = getItem(position);
         if (item != null) {
             holder.lineTextView.setText(String.valueOf(item));
         }
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
+        // setTag:Sets the tag associated with this view. which is used to store data within a view without resorting to another data structure.
+        holder.checkBox.setTag(position);
+
         //Remove a previously setOnCheckedChangeListener.in some cases, it will prevent unwanted situations
         holder.checkBox.setOnCheckedChangeListener(null);
-
-        // setTag:Sets the tag associated with this view. which is used to store data within a view without resorting to another data structure.
-        holder.checkBox.setTag(holder);
-        /**
-         if (holder.checkBox.isChecked()) {
-         Boolean value = preferences.getBoolean("checkedState", false);
-         holder.checkBox.setChecked(value); //setChecked:Changes the checked state of selected checkbox.
-         Log.e("pAdapter", "value  " + String.valueOf(value));
-         }
-         */
-        holder.checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (array.get(position)) {
-                    if (holder.checkBox.isChecked()) {
-                        //  Log.e("pAdapter", "isChecked  " + String.valueOf(holder.checkBox.isChecked()));
-                        // preferences.edit().putBoolean("checkedState", isChecked).commit();
-                        Log.e("pAdapter", "setChecked  " + String.valueOf(holder.checkBox.isChecked()));
-                        item.setSelected(isChecked);
-
-                        holder.checkBox.setChecked(item.isSelected()); //setChecked:Changes the checked state of selected checkbox.
-                        Log.e("pAdapter", "setCheckedValue  " + String.valueOf(item.isSelected()));
-
-                    }
-                }
-            }
+        if (holder.checkBox.isChecked()) {
+            holder.checkBox.setChecked(item.getSelected()); //setChecked:Changes the checked state of selected checkbox.
+        }
+        holder.checkBox.setOnCheckedChangeListener((compoundButton, isChecked) -> {
+            if (compoundButton.isPressed()) {
+                item.setSelected(isChecked);
+            } else item.setSelected(false);
         });
     }
 
@@ -86,14 +69,6 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
             super(layoutView);
             lineTextView = layoutView.findViewById(R.id.line);
             checkBox = layoutView.findViewById(R.id.checkbox);
-
-            layoutView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    array.put(getAdapterPosition(), true);
-                    notifyDataSetChanged();
-                }
-            });
         }
     }
 }
