@@ -6,6 +6,7 @@ import android.arch.lifecycle.ViewModel;
 import android.arch.paging.DataSource;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
+import android.support.annotation.Nullable;
 
 import com.ostendi.developer.pageviewitem.model.Item;
 import com.ostendi.developer.pageviewitem.model.PageDataSource;
@@ -15,7 +16,7 @@ import java.util.concurrent.Executors;
 
 public class MyViewModel extends ViewModel {
 
-    private static final int INITIAL_Load_Size =20;
+    private static final int INITIAL_Load_Size = 20;
     private static final int PAGE_SIZE = 20;
     private static final Boolean Enable_Place_holders = true;
     private static final int PREFETCH_DISTANCE = 5;//the paged list will attempt to load 10 items in advance of data that's already been accessed.

@@ -15,7 +15,7 @@ public class PageDataSource extends PositionalDataSource<Item> {
         List<Item> newItems = new ArrayList<>();
         // actual load code here
         for (int i = 0; i < pagecount; i++) {
-            newItems.add(new Item("Line " +i + " " + "startPosition(" + startPosition + ")"));
+            newItems.add(new Item("Item " + i + " " + "startPosition(" + startPosition + ")"));
         }
         return newItems;
     }
@@ -28,8 +28,6 @@ public class PageDataSource extends PositionalDataSource<Item> {
         callback.onResult(createNewItemsMatchingRequestedSize(params.requestedStartPosition, params.pageSize), params.requestedStartPosition, COUNT);
     }
 
-    //This method is called to load additional pages from the DataSource after the LoadInitialCallback passed to
-// dispatchLoadInitial has initialized a PagedList.
     @Override
     public void loadRange(@NonNull LoadRangeParams params, @NonNull LoadRangeCallback<Item> callback) {
         List<Item> newLoadedItems = createNewItemsMatchingRequestedSize(params.startPosition, params.loadSize);
@@ -37,4 +35,9 @@ public class PageDataSource extends PositionalDataSource<Item> {
     }
 
 
+    public static void saveSelectedItemInList(int position, Item selected) {
+        List<Item> selectedLineNumber = new ArrayList<>();
+        selectedLineNumber.add(position, selected);
+        Log.e("pageDataSource", selected + "saved in the list at position " + position);
+    }
 }

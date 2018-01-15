@@ -1,5 +1,6 @@
 package com.ostendi.developer.pageviewitem.view;
 
+import android.arch.lifecycle.LiveData;
 import android.arch.paging.PagedList;
 import android.arch.paging.PagedListAdapter;
 import android.content.Context;
@@ -15,12 +16,17 @@ import android.widget.TextView;
 
 import com.ostendi.developer.pageviewitem.R;
 import com.ostendi.developer.pageviewitem.model.Item;
+import com.ostendi.developer.pageviewitem.model.PageDataSource;
+import com.ostendi.developer.pageviewitem.viewmodel.MyViewModel;
+
+import java.util.List;
 
 public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.PageViewHolder> {
+    private static String TAG = "PageViewAdapter";
     private final Context context;
     SharedPreferences preferences;
     Item item;
-    PagedList<Item> pagedList;
+    PagedList<Item> items;
 
     PageViewAdapter(Context context) {
         super(Item.DIFF_CALLBACK);
@@ -39,31 +45,34 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
     //Data is bound to views
     @Override
     public void onBindViewHolder(PageViewAdapter.PageViewHolder holder, int position) {
-        preferences = PreferenceManager.getDefaultSharedPreferences(context);
-        Log.e("pAdapter", "onBindViewHolderCalled  ");
-        item = getItem(position);
+        //call the method getItem() in PagedListAdapter to get item on position based
+        item = getItem(holder.getAdapterPosition());
+       // Log.e(TAG, "item at position " + position + " : " + String.valueOf(item));
+       // Log.e(TAG, "adapterPosition " + holder.getAdapterPosition());
+
         if (item != null) {
             holder.lineTextView.setText(String.valueOf(item));
         }
-        // setTag:Sets the tag associated with this view. which is used to store data within a view without resorting to another data structure.
-        holder.checkBox.setTag(position);
 
         //Remove a previously setOnCheckedChangeListener.in some cases, it will prevent unwanted situations
         holder.checkBox.setOnCheckedChangeListener(null);
-        if (holder.checkBox.isChecked()) {
-            holder.checkBox.setChecked(item.getSelected()); //setChecked:Changes the checked state of selected checkbox.
-        }
+
         holder.checkBox.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (compoundButton.isPressed()) {
                 item.setSelected(isChecked);
-            } else item.setSelected(false);
+            } else {
+                item.setSelected(false);
+            }
+            holder.checkBox.setChecked(item.getSelected());
+            Log.e(TAG, "setChecked value " + item.getSelected());
+            Log.e(TAG, "item at correponding checked value :" + String.valueOf(item));
+            //  PageDataSource.saveSelectedItemInList(position,item);
         });
     }
 
     public class PageViewHolder extends RecyclerView.ViewHolder {
         public TextView lineTextView;
         public CheckBox checkBox;
-
 
         public PageViewHolder(View layoutView) {
             super(layoutView);
