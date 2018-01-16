@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public RecyclerView recyclerView;
     private GridLayoutManager gridLayoutManager;
     private PageViewAdapter pageViewAdapter;
-    int x =999999999;//x = Numbers of max rows which will be cached when scrolling.
+    int x =200;//x = Numbers of max rows which will be cached when scrolling.
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         pageViewAdapter = new PageViewAdapter(this);
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.activity_main);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
-        recyclerView.setHasFixedSize(true); //setHasFixedSize(true) means the RecyclerView has children (items) that has fixed width and height.
+        recyclerView.setHasFixedSize(false); //setHasFixedSize(true) means the RecyclerView has children (items) that has fixed width and height.
         recyclerView.setItemViewCacheSize(x);
 
         relativeLayout.removeView(recyclerView);

@@ -46,16 +46,15 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
     @Override
     public void onBindViewHolder(PageViewAdapter.PageViewHolder holder, int position) {
         //call the method getItem() in PagedListAdapter to get item on position based
-        item = getItem(holder.getAdapterPosition());
-       // Log.e(TAG, "item at position " + position + " : " + String.valueOf(item));
-       // Log.e(TAG, "adapterPosition " + holder.getAdapterPosition());
+        item = getItem(holder.getLayoutPosition());
+        Log.e(TAG, "item at position " + position + " : " + String.valueOf(item));
+        Log.e(TAG, "layoutPosition " + holder.getLayoutPosition());
 
         if (item != null) {
             holder.lineTextView.setText(String.valueOf(item));
         }
-
         //Remove a previously setOnCheckedChangeListener.in some cases, it will prevent unwanted situations
-        holder.checkBox.setOnCheckedChangeListener(null);
+        // holder.checkBox.setOnCheckedChangeListener(null);
 
         holder.checkBox.setOnCheckedChangeListener((compoundButton, isChecked) -> {
             if (compoundButton.isPressed()) {
