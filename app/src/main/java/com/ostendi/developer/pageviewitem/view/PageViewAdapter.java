@@ -42,30 +42,39 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
     //Data is bound to views
     @Override
     public void onBindViewHolder(PageViewAdapter.PageViewHolder holder, int position) {
-        //call the method getItem() in PagedListAdapter to get item on position based
-        //item = getItem(holder.getLayoutPosition());
-        // item = getItem(holder.getAdapterPosition());
+        /**
+         *  itemPagedList.get(position) method has null pointer exception so itemPagedList need to set  in constructor
+         *  for that find a way to pass the "liveObservedItem" from MainActivity class as parameter of pageViewAdapter
+         */
         //item = itemPagedList.get(position);
-        item = getItem(position);
-        Log.e(TAG, "item at position " + position + " : " + String.valueOf(item));
-        Log.e(TAG, "layoutPosition " + holder.getLayoutPosition());
 
+
+        /**
+         * call the method getItem(position) in PagedListAdapter to get item on position based but
+         * it select strange item position when i use checkbox so need to use itemPagedList.get(position)
+         */
+        item = getItem(position);
         if (item != null) {
             holder.lineTextView.setText(String.valueOf(item));
         }
-        //Remove a previously setOnCheckedChangeListener.in some cases, it will prevent unwanted situations
-        // holder.checkBox.setOnCheckedChangeListener(null);
+
+        //Remove a previously setOnCheckedChangeListener. In some cases, it will prevent unwanted situations
+        holder.checkBox.setOnCheckedChangeListener(null);
 
         holder.checkBox.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            if (holder.checkBox.isChecked()) {
+            if (compoundButton.isChecked()) {
                 item.setSelected(isChecked);
             } else {
                 item.setSelected(false);
             }
-            holder.checkBox.setChecked(item.getSelected());
-            Log.e(TAG, "setChecked value " + item.getSelected());
-            Log.e(TAG, "item at correponding checked value :" + String.valueOf(item));
-            PageDataSource.saveSelectedItemInList(item);
+            if (item.getSelected()) {
+                holder.checkBox.setChecked(true);
+                /**
+                 * Here checkbox select strange item position. Example: when i click on item 1 , it select item 5.
+                 */
+                Log.e(TAG, "item at correponding checked value :" + String.valueOf(item));
+                PageDataSource.saveSelectedItemInList(item);
+            }
         });
     }
 
