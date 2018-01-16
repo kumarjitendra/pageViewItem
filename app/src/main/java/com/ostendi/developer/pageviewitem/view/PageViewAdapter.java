@@ -1,11 +1,11 @@
 package com.ostendi.developer.pageviewitem.view;
 
-import android.arch.lifecycle.LiveData;
+
 import android.arch.paging.PagedList;
 import android.arch.paging.PagedListAdapter;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
+
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,9 +17,6 @@ import android.widget.TextView;
 import com.ostendi.developer.pageviewitem.R;
 import com.ostendi.developer.pageviewitem.model.Item;
 import com.ostendi.developer.pageviewitem.model.PageDataSource;
-import com.ostendi.developer.pageviewitem.viewmodel.MyViewModel;
-
-import java.util.List;
 
 public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.PageViewHolder> {
     private static String TAG = "PageViewAdapter";
@@ -46,7 +43,9 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
     @Override
     public void onBindViewHolder(PageViewAdapter.PageViewHolder holder, int position) {
         //call the method getItem() in PagedListAdapter to get item on position based
-        item = getItem(holder.getLayoutPosition());
+        //item = getItem(holder.getLayoutPosition());
+        // item = getItem(holder.getAdapterPosition());
+        item = getItem(position);
         Log.e(TAG, "item at position " + position + " : " + String.valueOf(item));
         Log.e(TAG, "layoutPosition " + holder.getLayoutPosition());
 
@@ -65,7 +64,7 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
             holder.checkBox.setChecked(item.getSelected());
             Log.e(TAG, "setChecked value " + item.getSelected());
             Log.e(TAG, "item at correponding checked value :" + String.valueOf(item));
-            //  PageDataSource.saveSelectedItemInList(position,item);
+            PageDataSource.saveSelectedItemInList(item);
         });
     }
 
