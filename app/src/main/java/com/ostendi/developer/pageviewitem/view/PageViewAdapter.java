@@ -23,7 +23,7 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
     private final Context context;
     SharedPreferences preferences;
     Item item;
-    PagedList<Item> items;
+    PagedList<Item> itemPagedList;
 
     PageViewAdapter(Context context) {
         super(Item.DIFF_CALLBACK);
@@ -45,6 +45,7 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
         //call the method getItem() in PagedListAdapter to get item on position based
         //item = getItem(holder.getLayoutPosition());
         // item = getItem(holder.getAdapterPosition());
+        //item = itemPagedList.get(position);
         item = getItem(position);
         Log.e(TAG, "item at position " + position + " : " + String.valueOf(item));
         Log.e(TAG, "layoutPosition " + holder.getLayoutPosition());
@@ -56,7 +57,7 @@ public class PageViewAdapter extends PagedListAdapter<Item, PageViewAdapter.Page
         // holder.checkBox.setOnCheckedChangeListener(null);
 
         holder.checkBox.setOnCheckedChangeListener((compoundButton, isChecked) -> {
-            if (compoundButton.isPressed()) {
+            if (holder.checkBox.isChecked()) {
                 item.setSelected(isChecked);
             } else {
                 item.setSelected(false);

@@ -35,9 +35,9 @@ public class PageDataSource extends PositionalDataSource<Item> {
     }
 
 
-    public static void saveSelectedItemInList( Item selected) {
+    public static void saveSelectedItemInList(Item selected) {
         List<Item> selectedLineNumber = new ArrayList<Item>();
         selectedLineNumber.add(selected);
-        Log.e("pageDataSource", selected + "saved in the list ");
+        Log.e("pageDataSource", selected + " saved in the list of PositionalDataSource");
     }
 }

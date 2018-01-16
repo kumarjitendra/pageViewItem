@@ -26,14 +26,11 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        pageViewAdapter = new PageViewAdapter(this);
         RelativeLayout relativeLayout = (RelativeLayout) findViewById(R.id.activity_main);
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(false); //setHasFixedSize(true) means the RecyclerView has children (items) that has fixed width and height.
         recyclerView.setItemViewCacheSize(x);
-
-        relativeLayout.removeView(recyclerView);
-        relativeLayout.addView(recyclerView);
+        pageViewAdapter = new PageViewAdapter(this);
         MyViewModel viewModel = ViewModelProviders.of(this).get(MyViewModel.class);
         viewModel.getLivePagedListData().observe(this, new Observer<PagedList<Item>>() {
             @Override
