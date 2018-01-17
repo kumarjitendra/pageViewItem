@@ -3,13 +3,11 @@ package com.ostendi.developer.pageviewitem.viewmodel;
 
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.ViewModel;
-import android.arch.paging.DataSource;
 import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
-import android.support.annotation.Nullable;
 
 import com.ostendi.developer.pageviewitem.model.Item;
-import com.ostendi.developer.pageviewitem.model.PageDataSource;
+import com.ostendi.developer.pageviewitem.model.DataSource;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -23,10 +21,10 @@ public class MyViewModel extends ViewModel {
     private static final int INITIAL_LOAD_KEY = 0;
     Executor backgroundThreadexecuter;
     PagedList.BoundaryCallback<Item> boundaryCallback;
+    DataSource dataSource;
 
     //LiveData:Data holder class that keeps a value(here Item) and allows this value to be observed
     public LiveData<PagedList<Item>> livePagedListData;
-    PageDataSource pageDataSource;
 
     public MyViewModel() {
 
@@ -36,12 +34,12 @@ public class MyViewModel extends ViewModel {
         getpagedListLiveData();
     }
 
-    private final DataSource.Factory<Integer, Item> dataSourceFactory =
-            new DataSource.Factory<Integer, Item>() {
+    private final android.arch.paging.DataSource.Factory<Integer, Item> dataSourceFactory =
+            new android.arch.paging.DataSource.Factory<Integer, Item>() {
                 @Override
-                public DataSource<Integer, Item> create() {
-                    pageDataSource = new PageDataSource();
-                    return pageDataSource;
+                public android.arch.paging.DataSource create() {
+                    dataSource = new DataSource();
+                    return dataSource;
                 }
             };
     private final PagedList.Config pagedListConfig =

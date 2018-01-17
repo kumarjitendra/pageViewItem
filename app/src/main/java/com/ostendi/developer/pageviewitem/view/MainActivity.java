@@ -1,6 +1,5 @@
 package com.ostendi.developer.pageviewitem.view;
 
-import android.app.Activity;
 import android.arch.lifecycle.Observer;
 import android.arch.lifecycle.ViewModelProviders;
 import android.arch.paging.PagedList;
@@ -19,7 +18,7 @@ public class MainActivity extends AppCompatActivity {
 
     public RecyclerView recyclerView;
     private GridLayoutManager gridLayoutManager;
-    private PageViewAdapter pageViewAdapter;
+    private MyAdapter myAdapter;
     int x =200;//x = Numbers of max rows which will be cached when scrolling.
 
     @Override
@@ -30,17 +29,17 @@ public class MainActivity extends AppCompatActivity {
         recyclerView = (RecyclerView) findViewById(R.id.recyclerview);
         recyclerView.setHasFixedSize(false); //setHasFixedSize(true) means the RecyclerView has children (items) that has fixed width and height.
         recyclerView.setItemViewCacheSize(x);
-        pageViewAdapter = new PageViewAdapter(this);
+        myAdapter = new MyAdapter(this);
         MyViewModel viewModel = ViewModelProviders.of(this).get(MyViewModel.class);
         viewModel.getLivePagedListData().observe(this, new Observer<PagedList<Item>>() {
             @Override
             public void onChanged(@Nullable PagedList<Item> liveObservedItem) {
-                pageViewAdapter.setList(liveObservedItem);
+                myAdapter.setList(liveObservedItem);
             }
         });
 
-        //Attach the pageViewAdapter to recyclerview
-        recyclerView.setAdapter(pageViewAdapter);
+        //Attach the myAdapter to recyclerview
+        recyclerView.setAdapter(myAdapter);
         int numberOfColumns = 1;
         gridLayoutManager = new GridLayoutManager(this.getApplicationContext(), numberOfColumns);
         gridLayoutManager.setOrientation(GridLayoutManager.VERTICAL);

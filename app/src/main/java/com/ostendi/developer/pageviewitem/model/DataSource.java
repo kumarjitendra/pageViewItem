@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-public class PageDataSource extends PositionalDataSource<Item> {
+public class DataSource extends PositionalDataSource<Item> {
+    private static String TAG = "DataSource";
     int COUNT = 265656565;
 
     private List<Item> createNewItemsMatchingRequestedSize(int startPosition, int pagecount) {
@@ -35,9 +36,9 @@ public class PageDataSource extends PositionalDataSource<Item> {
     }
 
 
-    public static void saveSelectedItemInList(Item selected) {
-        List<Item> selectedLineNumber = new ArrayList<Item>();
-        selectedLineNumber.add(selected);
-        Log.e("pageDataSource", selected + " saved in the list of PositionalDataSource");
+    public static void saveSelectedItemInList(int position) {
+        List<Integer> selectedLineNumber = new ArrayList<Integer>();
+        selectedLineNumber.add(position);
+        Log.e(TAG,   "  checkbox state at position " +position + " has been updated(saved/unsaved) in the list of DataSource");
     }
 }
