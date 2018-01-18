@@ -4,12 +4,18 @@ import android.arch.paging.PositionalDataSource;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
+import com.ostendi.developer.pageviewitem.view.MyAdapter;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 
 public class DataSource extends PositionalDataSource<Item> {
+
     private static String TAG = "DataSource";
+    private Integer[] intArray = new Integer[]{4, 7, 10};
+    private List<Integer> listOfPosition = new ArrayList<>(Arrays.asList(intArray));
     int COUNT = 265656565;
 
     private List<Item> createNewItemsMatchingRequestedSize(int startPosition, int pagecount) {
@@ -35,10 +41,9 @@ public class DataSource extends PositionalDataSource<Item> {
         callback.onResult(newLoadedItems);
     }
 
-
-    public static void saveSelectedItemInList(int position) {
-        List<Integer> selectedLineNumber = new ArrayList<Integer>();
-        selectedLineNumber.add(position);
-        Log.e(TAG,   "  checkbox state at position " +position + " has been updated(saved/unsaved) in the list of DataSource");
+    public void saveSelectedItemInList(int position) {
+        listOfPosition.add(position);
+        Log.e(TAG, "checkbox state(saved/unsaved) at position " + position + " has been updated in the list of DataSource");
+        Log.e(TAG, "Updated listOfPosition in DataSource " + listOfPosition);
     }
 }

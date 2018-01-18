@@ -2,17 +2,24 @@ package com.ostendi.developer.pageviewitem.model;
 
 import android.support.annotation.NonNull;
 import android.support.v7.recyclerview.extensions.DiffCallback;
-import android.util.Log;
-import android.widget.Checkable;
 
 public class Item {
 
     private String value;
+    private boolean selected;
+
+
 
     public Item(String value) {
         this.value = value;
     }
 
+    public void setSelected(boolean selected) {
+        this.selected = selected;
+    }
+    public boolean getSelected() {
+        return selected;
+    }
     public final static DiffCallback<Item> DIFF_CALLBACK = new DiffCallback<Item>() {
         @Override
         public boolean areItemsTheSame(@NonNull Item oldItem, @NonNull Item newItem) {
@@ -29,6 +36,7 @@ public class Item {
     public String toString() {
         return value.toString();
     }
+
 
 }
 
