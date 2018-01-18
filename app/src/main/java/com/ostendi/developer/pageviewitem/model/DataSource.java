@@ -14,8 +14,8 @@ import java.util.List;
 public class DataSource extends PositionalDataSource<Item> {
 
     private static String TAG = "DataSource";
-    private Integer[] intArray = new Integer[]{4, 7, 10};
-    private List<Integer> listOfPosition = new ArrayList<>(Arrays.asList(intArray));
+   /// private Integer[] intArray =new Integer[]{};
+    private List<Integer> listOfPosition = new ArrayList<>();//new ArrayList<>((Arrays.asList(intArray)));
     int COUNT = 265656565;
 
     private List<Item> createNewItemsMatchingRequestedSize(int startPosition, int pagecount) {
@@ -43,7 +43,7 @@ public class DataSource extends PositionalDataSource<Item> {
 
     public void saveSelectedItemInList(int position) {
         listOfPosition.add(position);
-        Log.e(TAG, "checkbox state(saved/unsaved) at position " + position + " has been updated in the list of DataSource");
+        Log.e(TAG, "checkbox state(true/false) at position " + position + " has been updated in the list of DataSource");
         Log.e(TAG, "Updated listOfPosition in DataSource " + listOfPosition);
     }
 }

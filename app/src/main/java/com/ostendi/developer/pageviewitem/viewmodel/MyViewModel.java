@@ -14,10 +14,10 @@ import java.util.concurrent.Executors;
 
 public class MyViewModel extends ViewModel {
 
-    private static final int INITIAL_Load_Size = 20;
-    private static final int PAGE_SIZE = 20;
+    private static final int INITIAL_Load_Size = 50;
+    private static final int PAGE_SIZE = 25;
     private static final Boolean Enable_Place_holders = true;
-    private static final int PREFETCH_DISTANCE = 5;//the paged list will attempt to load 10 items in advance of data that's already been accessed.
+    private static final int PREFETCH_DISTANCE = 20;//the paged list will attempt to load 10 items in advance of data that's already been accessed.
     private static final int INITIAL_LOAD_KEY = 0;
     Executor backgroundThreadexecuter;
     PagedList.BoundaryCallback<Item> boundaryCallback;
