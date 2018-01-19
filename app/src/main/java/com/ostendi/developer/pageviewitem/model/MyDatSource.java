@@ -4,8 +4,6 @@ import android.arch.paging.PositionalDataSource;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
-import com.ostendi.developer.pageviewitem.view.MyAdapter;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -22,16 +20,20 @@ public class MyDatSource extends PositionalDataSource<Item> {
         // actual load code here
         for (int i = 0; i < pagecount; i++) {
             Item item = new Item("Item " + i + " " + "startPosition(" + startPosition + ")");
+
             //listOfPosition.contains(startPosition + i) is boolean to check wheck it's true or not
             if (listOfPosition.contains(startPosition + i)) {
                 Log.e(TAG, "listOfPosition to be preSelected  " + listOfPosition);
                 item.setSelected(true);
+                item.setListofPreSelectedPosition(listOfPosition);
                 Log.e(TAG, "preSelected item is : " + item  );
             }
             newItems.add(item);
         }
         return newItems;
     }
+
+
 
     @Override
     public void loadInitial(@NonNull LoadInitialParams params, @NonNull LoadInitialCallback<Item> callback) {

@@ -18,7 +18,6 @@ import com.ostendi.developer.pageviewitem.model.MyDatSource;
 public class MyAdapter extends PagedListAdapter<Item, MyAdapter.ViewHolder> {
     private static String TAG = "MyAdapter";
     private MyDatSource dataSource = new MyDatSource();
-    Item item;
 
     MyAdapter() {
         super(Item.DIFF_CALLBACK);
@@ -46,15 +45,16 @@ public class MyAdapter extends PagedListAdapter<Item, MyAdapter.ViewHolder> {
     //Data is bound to views
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        /**
-         * call the method getItem(position) in PagedListAdapter to get item on position based
-         */
-        item = getItem(position);
-        if (item != null) {
-            holder.lineTextView.setText(String.valueOf(item));
+        holder.lineTextView.setText(String.valueOf(getItem(position)));
+        int preSelectedPosition=4; //Get this position from event of dataSource or Item ...
+        if(holder.getAdapterPosition()==preSelectedPosition)
+        {
+            holder.checkBox.setChecked(true);
         }
-        item = getItem(holder.getAdapterPosition());
-        holder.lineTextView.setText(String.valueOf(item));
+        else
+        {
+            holder.checkBox.setChecked(false);
+        }
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
