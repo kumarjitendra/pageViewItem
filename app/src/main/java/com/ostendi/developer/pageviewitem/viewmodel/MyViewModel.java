@@ -7,7 +7,7 @@ import android.arch.paging.LivePagedListBuilder;
 import android.arch.paging.PagedList;
 
 import com.ostendi.developer.pageviewitem.model.Item;
-import com.ostendi.developer.pageviewitem.model.DataSource;
+import com.ostendi.developer.pageviewitem.model.MyDatSource;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -21,7 +21,7 @@ public class MyViewModel extends ViewModel {
     private static final int INITIAL_LOAD_KEY = 0;
     Executor backgroundThreadexecuter;
     PagedList.BoundaryCallback<Item> boundaryCallback;
-    DataSource dataSource;
+    MyDatSource dataSource;
 
     //LiveData:Data holder class that keeps a value(here Item) and allows this value to be observed
     public LiveData<PagedList<Item>> livePagedListData;
@@ -38,7 +38,7 @@ public class MyViewModel extends ViewModel {
             new android.arch.paging.DataSource.Factory<Integer, Item>() {
                 @Override
                 public android.arch.paging.DataSource create() {
-                    dataSource = new DataSource();
+                    dataSource = new MyDatSource();
                     return dataSource;
                 }
             };
@@ -46,7 +46,7 @@ public class MyViewModel extends ViewModel {
             new PagedList.Config.Builder()
                     .setPrefetchDistance(PREFETCH_DISTANCE)//Distance the PagedList should prefetch.If not set, defaults to page size.
                     .setInitialLoadSizeHint(INITIAL_Load_Size)//Defines how many items to load when first load occurs.
-                    .setPageSize(PAGE_SIZE)//Defines the number of items loaded at once from the DataSource.
+                    .setPageSize(PAGE_SIZE)//Defines the number of items loaded at once from the MyDatSource.
                     .setEnablePlaceholders(Enable_Place_holders)
                     .build();
 
@@ -59,7 +59,7 @@ public class MyViewModel extends ViewModel {
                 //Pass a BoundaryCallback to listen to when the PagedList runs out of data to load
                 .setBoundaryCallback(boundaryCallback)
                 .setBackgroundThreadExecutor(backgroundThreadexecuter) //Sets backgroundThreadexecuter which will be used for background loading of pages.
-                .setInitialLoadKey(INITIAL_LOAD_KEY)//When a new PagedList/DataSource pair is created after the first, it acquires a load key from the previous generation so that data is loaded around the position already being observed.
+                .setInitialLoadKey(INITIAL_LOAD_KEY)//When a new PagedList/MyDatSource pair is created after the first, it acquires a load key from the previous generation so that data is loaded around the position already being observed.
                 .build();
     }
 

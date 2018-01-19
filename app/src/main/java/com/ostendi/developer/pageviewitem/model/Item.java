@@ -6,7 +6,7 @@ import android.support.v7.recyclerview.extensions.DiffCallback;
 public class Item {
 
     private String value;
-    private boolean selected;
+    private  boolean selected ;
 
 
 
@@ -17,7 +17,7 @@ public class Item {
     public void setSelected(boolean selected) {
         this.selected = selected;
     }
-    public boolean getSelected() {
+    public  boolean getSelected() {
         return selected;
     }
     public final static DiffCallback<Item> DIFF_CALLBACK = new DiffCallback<Item>() {

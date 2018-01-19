@@ -11,18 +11,24 @@ import java.util.Arrays;
 import java.util.List;
 
 
-public class DataSource extends PositionalDataSource<Item> {
+public class MyDatSource extends PositionalDataSource<Item> {
 
-    private static String TAG = "DataSource";
-   /// private Integer[] intArray =new Integer[]{};
-    private List<Integer> listOfPosition = new ArrayList<>();//new ArrayList<>((Arrays.asList(intArray)));
+    private static String TAG = "MyDatSource";
     int COUNT = 265656565;
+    private List<Integer> listOfPosition = new ArrayList<>((Arrays.asList(4,7,10,90)));
 
     private List<Item> createNewItemsMatchingRequestedSize(int startPosition, int pagecount) {
         List<Item> newItems = new ArrayList<>();
         // actual load code here
         for (int i = 0; i < pagecount; i++) {
-            newItems.add(new Item("Item " + i + " " + "startPosition(" + startPosition + ")"));
+            Item item = new Item("Item " + i + " " + "startPosition(" + startPosition + ")");
+            //listOfPosition.contains(startPosition + i) is boolean to check wheck it's true or not
+            if (listOfPosition.contains(startPosition + i)) {
+                Log.e(TAG, "listOfPosition to be preSelected  " + listOfPosition);
+                item.setSelected(true);
+                Log.e(TAG, "preSelected item is : " + item  );
+            }
+            newItems.add(item);
         }
         return newItems;
     }
@@ -43,7 +49,7 @@ public class DataSource extends PositionalDataSource<Item> {
 
     public void saveSelectedItemInList(int position) {
         listOfPosition.add(position);
-        Log.e(TAG, "checkbox state(true/false) at position " + position + " has been updated in the list of DataSource");
-        Log.e(TAG, "Updated listOfPosition in DataSource " + listOfPosition);
+        Log.e(TAG, "checkbox state(true/false) at position " + position + " has been updated in the list of MyDatSource");
+        Log.e(TAG, "Updated listOfPosition in MyDatSource " + listOfPosition);
     }
 }
